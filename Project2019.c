@@ -1,3 +1,14 @@
+/**
+    02/2020
+    This is the final commit to my first semester programming course.
+    It is mainly a text parser, supporting 6 commands
+    ap: <text> Appends a paragraph to the inputted text
+    fw, fs, fp: <text> Finds the <text> in the words, sentences, paragraphs (accordingly) given by the user and outputs them
+    owl, owf: output every word inputted based on length and frequency (accordingly)
+**/
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -20,6 +31,25 @@ typedef struct paragraph
     sentence *sentences;
     int sentencecount;
 } paragraph;
+/**
+    The text structure should be as follows:
+    paragraphs:(accessed as struct pointers)
+        [0]:
+        |   sentences:
+        |       [0]: { word1, word2, ..., wordN }//Where all these words are the first sentence, first paragraph
+        |       [1]: { word1, word2, ..., wordN }//And all these are the second sentence, first paragraph
+        |       ...
+        [1]:
+        |   sentences:
+        |       [0]: { word1, word2, ..., wordN }//Where all these words are the first sentence, second paragraph
+        |       [1]: { word1, word2, ..., wordN }//And all these are the second sentence, second paragraph
+        |       ...
+        |..
+                
+**/
+
+
+
 //FUNCTION DECLERATIONS
 paragraph *ap(char *buffer);
 
@@ -40,22 +70,22 @@ int main()
     char run = 1;
     char *command = malloc(SIZE*sizeof(char));
     strcpy(command, "");
-    int paragraph_counter = 0;
+    int paragraph_counter = 0;//Counts how many paragraphs have been inputted
 
-    paragraph **pl = malloc(sizeof(paragraph*)*SIZE);
-    for (int i = 0; i < SIZE; i++) pl[i] = malloc(sizeof(paragraph));
+    paragraph **pl = malloc(sizeof(paragraph*)*SIZE);//Allocate enough memory for 10000*paragraphs
+    for (int i = 0; i < SIZE; i++) pl[i] = malloc(sizeof(paragraph));//Init each one
 
     while (run)
     {
         fgets(command, SIZE, stdin);
-        if (command[strlen(command) - 1] == '\n') command[strlen(command) - 1] = '\0';
+        if (command[strlen(command) - 1] == '\n') command[strlen(command) - 1] = '\0';//Strip trailing \n
 
         if (command[0] == 'a' && command[1] == 'p' && command[2] == ':')
         {
             command += 3;//Memory level magic
-            //"strips" the string of the ap: part
+            //strips the string of the 'ap:' part
             pl[paragraph_counter++] = ap(command);//I add a paragraph and fill the current paragraph in the array with the parse information
-
+            //Add one to the paragraph counter and fill the struct with the info
             //Now i have a pointer full of the information needed
         }
         else if (command[0] == 'f' && command[1] == 'w' && command[2] == ':')
@@ -127,7 +157,7 @@ void parse(paragraph *p, char *buffer)
             local_buffer[cc++] = buffer[i];//If the char is a normal character then add it to the local buffer
         }
         else if ((buffer[i-1] >= 'a' && buffer[i-1] <= 'z') || (buffer[i-1] >= 'A' && buffer[i-1] <= 'Z'))
-        {//If the current char is a space or other not normal character
+        {//If the current char is a space or other not normal character and the character before is a normal
             local_buffer[cc] = '\0';//End the current word with \0
             strcpy(p->sentences[sc].words[wc], local_buffer);//Copy it to the words array
             p->sentences[sc].words = realloc(p->sentences[sc].words, (wc + 2)*sizeof(char*));//Free empty memory
