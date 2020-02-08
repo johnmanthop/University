@@ -1,1 +1,1 @@
-# University
+All university related bullshit
