@@ -1,6 +1,5 @@
 #include <queue>
-//for simplicity put code in .h file
-//also for simplicity use raw arrays instead of vectors etc...
+//for simplicity use raw arrays instead of vectors etc...
 int *gale_shapley(int **hosp_pref, int **stud_pref, int n)
 {
 	int hospital[n] = { 0 };
