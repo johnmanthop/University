@@ -1,1 +1,1 @@
-All university related bullshit
+All university related bs
