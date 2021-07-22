@@ -1,1 +1,1 @@
-All university related bs
+Everything university related.
